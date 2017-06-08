@@ -1,0 +1,37 @@
+body{
+    margin: 0;
+    background-color: rgb(192, 224, 177);
+    color: rgba(0,0,0,0.9);
+}
+.header{
+    text-align: center;
+    margin-top: 50px;
+}
+.nav{
+    position: fixed;
+    top: 2px;
+    left: 2px;
+}
+.nav__link{
+    font-size: 12px;
+    color: rgba(0,0,0,0.9);
+    text-decoration: none;
+}
+.nav__link:hover{
+    text-decoration: underline;
+}
+.tag-first{
+    font-size: 20px;
+}
+.tag-second{
+    font-size: 18px;
+}
+.tag-third{
+    font-size: 16px;
+}
+.tag-fourth{
+    font-size: 14px;
+}
+.tag-fifth{
+    font-size: 12px;
+}
