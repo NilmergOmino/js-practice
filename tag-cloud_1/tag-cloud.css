@@ -5,7 +5,7 @@ body{
 }
 .header{
     text-align: center;
-    margin-top: 50px;
+    margin: 50px 0;
 }
 .nav{
     position: fixed;
@@ -19,6 +19,10 @@ body{
 }
 .nav__link:hover{
     text-decoration: underline;
+}
+.tags-container{
+    width: 350px;
+    margin: 100px auto;
 }
 .tag-first{
     font-size: 20px;
@@ -34,4 +38,24 @@ body{
 }
 .tag-fifth{
     font-size: 12px;
+}
+.tag-list{
+    padding: 0;
+    margin: 0;
+}
+.tag-list li{
+    list-style: none;
+    display: inline-block;
+}
+.tag-list a{
+    text-decoration: none;
+    color: rgba(0,0,0,0.9);
+    margin: 5px;
+}
+.tag-list a:hover{
+    background-color: rgb(66, 137, 244);
+}
+.tag-list a:focus{
+    outline: none;
+    background-color: rgb(66, 137, 244);
 }
