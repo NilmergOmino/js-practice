@@ -57,5 +57,8 @@ body{
     padding-top: 25px;
 }
 .main__country-map{
-    width: 150px;
+    height: 200px;
+}
+.main__map-figurecaption{
+    font-size: 11px;
 }

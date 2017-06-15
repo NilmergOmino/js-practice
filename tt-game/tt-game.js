@@ -4,14 +4,30 @@ window.addEventListener('DOMContentLoaded', function(){
         tCurrentPosition = document.getElementById('travel-current-position'),
         tMovements = document.getElementById('travel-movements'),
         tCommandLine = document.getElementById('command-line'),
-        tMap = document.getElementById('country-map');
+        tMap = document.getElementById('country-map'),
+        countriesLength = countries.length;
+    var randomStartCountry, randomEndCountry, tStartPosition, tDestinationValue, tDescriptionValue, tMove, tCurrentPositionValue, tAllVisitedPlaces, tMapSrc;
     tCommandLine.focus();
 
-    var countriesLength = countries.length,
+    var setRandomCountries = function(){
         randomStartCountry = Math.floor(Math.random()*countriesLength);
+        do{
+            randomEndCountry = Math.floor(Math.random()*countriesLength);
+        }
+        while(randomStartCountry == randomEndCountry);
+    }
 
-    do{  var randomEndCountry = Math.floor(Math.random()*countriesLength);    }
-    while(randomStartCountry == randomEndCountry);
+    var setGameStartValues = function(){
+        tStartPosition = countries[randomStartCountry][0],
+        tDestinationValue = countries[randomEndCountry][0],
+        tDescriptionValue = "Witaj przyjacielu, musisz dostać się do pewnego państwa przekraczając jak najmniejszą ilość granic. Zaczynajmy!<br><br>Twoje obecne położenie: "+tStartPosition+"<br>Twój cel podróży: "+tDestinationValue,
+        tMove = 0,
+        tCurrentPositionValue = tStartPosition,
+        tAllVisitedPlaces = tStartPosition+" -> ",
+        tMapSrc = "img/countries/"+countries[randomStartCountry][1]+".svg";
+        tDestination.innerHTML = tDestinationValue;
+        setGameValues(tMove, tCurrentPositionValue, tDescriptionValue, tMapSrc);
+    }
 
     var setGameValues = function(tMove, tCurrentPositionValue, tDescriptionValue, tMapSrc){
         tDescription.innerHTML = tDescriptionValue;
@@ -32,23 +48,28 @@ window.addEventListener('DOMContentLoaded', function(){
         for (var i = 0; i < countriesLength; i++) {
             if(countries[i][0] == tCurrentPositionValue){
                 var countryLength = countries[i].length;
-                for(var j=1; j<countryLength; j++){
+                for(var j=2; j<countryLength; j++){
                     if(needHelp){
                         whereCanYouGo += countries[i][j]+", ";
                     }
                     if(countries[i][j] == placeToGo){
                         isOk = true;
                         tAllVisitedPlaces += placeToGo+" -> ";
-                        tMapSrc = "img/countries/"+placeToGo.toLowerCase()+".svg";
+                        for(var k=0; k<countriesLength; k++){
+                            if(countries[k][0] == placeToGo){
+                                tMapSrc = "img/countries/"+countries[k][1]+".svg";
+                            }
+                        }
                     }
                 }
             }
         }
+
         if(isOk){
             tMove +=1;
             tCurrentPositionValue = placeToGo;
             if(tCurrentPositionValue == tDestinationValue){
-                tDescriptionValue = "Wspaniale! Dotarłeś do celu!<br>Twoja trasa:<br><br>"+tAllVisitedPlaces.slice(0, -4);
+                tDescriptionValue = "Wspaniale! Dotarłeś do celu!<br>Twoja trasa:<br><br>"+tAllVisitedPlaces.slice(0, -4)+"<br><br>aby rozpocząć nową grę wpisz polecenie: restart";
             }
             else{
                 tDescriptionValue = "Dobra robota, Twoja nowa pozycja to: "+tCurrentPositionValue;
@@ -69,21 +90,17 @@ window.addEventListener('DOMContentLoaded', function(){
         return true;
     }
 
-    var tStartPosition = countries[randomStartCountry][0],
-        tDestinationValue = countries[randomEndCountry][0],
-        tDescriptionValue = "Witaj przyjacielu, musisz dostać się do pewnego państwa przekraczając jak najmniejszą ilość granic. Zaczynajmy!<br><br>Twoje obecne położenie: "+tStartPosition+"<br>Twój cel podróży: "+tDestinationValue,
-        tMove = 0,
-        tCurrentPositionValue = tStartPosition,
-        tAllVisitedPlaces = tStartPosition+" -> ",
-        tMapSrc = "img/countries/"+tCurrentPositionValue.toLowerCase()+".svg";
-    tDestination.innerHTML = tDestinationValue;
-
-    setGameValues(tMove, tCurrentPositionValue, tDescriptionValue, tMapSrc);
+    setRandomCountries();
+    setGameStartValues();
 
     tCommandLine.addEventListener('keydown', function(e){
         if(e.keyCode == "13"){
             if(validateString(tCommandLine.value)){
-                makeMove(tCommandLine.value.trim());
+                if(tCommandLine.value.trim().toLowerCase() == 'restart'){
+                    setRandomCountries();
+                    setGameStartValues();
+                }
+                else makeMove(tCommandLine.value.trim());
             }
             else{
                 tDescription.innerHTML = "Nie ma takiego miejsca";
