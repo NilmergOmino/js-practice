@@ -5,7 +5,8 @@ window.addEventListener('DOMContentLoaded', function(){
         tMovements = document.getElementById('travel-movements'),
         tCommandLine = document.getElementById('command-line'),
         tMap = document.getElementById('country-map'),
-        countriesLength = countries.length;
+        countriesLength = countries.length,
+        seasLength = seas.length;
     var randomStartCountry, randomEndCountry, tStartPosition, tDestinationValue, tDescriptionValue, tMove, tCurrentPositionValue, tAllVisitedPlaces, tMapSrc;
     tCommandLine.focus();
 
@@ -18,6 +19,7 @@ window.addEventListener('DOMContentLoaded', function(){
     }
 
     var setGameStartValues = function(){
+        setRandomCountries();
         tStartPosition = countries[randomStartCountry][0],
         tDestinationValue = countries[randomEndCountry][0],
         tDescriptionValue = "Witaj przyjacielu, musisz dostać się do pewnego państwa przekraczając jak najmniejszą ilość granic. Zaczynajmy!<br><br>Twoje obecne położenie: "+tStartPosition+"<br>Twój cel podróży: "+tDestinationValue,
@@ -38,7 +40,6 @@ window.addEventListener('DOMContentLoaded', function(){
     }
 
     var makeMove = function(placeToGo){
-        placeToGo = placeToGo.charAt(0).toUpperCase() + placeToGo.toLowerCase().slice(1);
         var isOk = false,
             needHelp = false;
         if(placeToGo.toLowerCase() == "pomoc"){
@@ -52,8 +53,9 @@ window.addEventListener('DOMContentLoaded', function(){
                     if(needHelp){
                         whereCanYouGo += countries[i][j]+", ";
                     }
-                    if(countries[i][j] == placeToGo){
+                    if(countries[i][j].toLowerCase() == placeToGo.toLowerCase()){
                         isOk = true;
+                        placeToGo = countries[i][j];
                         tAllVisitedPlaces += placeToGo+" -> ";
                         for(var k=0; k<countriesLength; k++){
                             if(countries[k][0] == placeToGo){
@@ -64,7 +66,19 @@ window.addEventListener('DOMContentLoaded', function(){
                 }
             }
         }
-
+        for (var i = 0; i < seasLength; i++) {
+            if(seas[i][0].toLowerCase() == placeToGo.toLowerCase()){
+                var seaLength = seas[i].length;
+                for(var j=1; j<seaLength; j++){
+                    if(seas[i][j] == tCurrentPositionValue){
+                        isOk = true;
+                        placeToGo = seas[i][0];
+                        tAllVisitedPlaces += placeToGo+" -> ";
+                        tMapSrc = "img/countries/seaPlace.svg";
+                    }
+                }
+            }
+        }
         if(isOk){
             tMove +=1;
             tCurrentPositionValue = placeToGo;
@@ -72,7 +86,7 @@ window.addEventListener('DOMContentLoaded', function(){
                 tDescriptionValue = "Wspaniale! Dotarłeś do celu!<br>Twoja trasa:<br><br>"+tAllVisitedPlaces.slice(0, -4)+"<br><br>aby rozpocząć nową grę wpisz polecenie: restart";
             }
             else{
-                tDescriptionValue = "Dobra robota, Twoja nowa pozycja to: "+tCurrentPositionValue;
+                tDescriptionValue = 'Twoja nowa pozycja to: <span class="span_bold">'+tCurrentPositionValue+'</span>';
             }
             setGameValues(tMove, tCurrentPositionValue, tDescriptionValue, tMapSrc);
         }
@@ -81,7 +95,7 @@ window.addEventListener('DOMContentLoaded', function(){
             setGameValues(tMove, tCurrentPositionValue, tDescriptionValue, tMapSrc);
         }
         else{
-            tDescriptionValue = "Nie ma miejsca "+placeToGo+" w okolicy";
+            tDescriptionValue = 'Nie ma miejsca <span class="span_bold">'+placeToGo+'</span> w okolicy';
             setGameValues(tMove, tCurrentPositionValue, tDescriptionValue, tMapSrc);
         }
     }
@@ -90,15 +104,17 @@ window.addEventListener('DOMContentLoaded', function(){
         return true;
     }
 
-    setRandomCountries();
     setGameStartValues();
 
     tCommandLine.addEventListener('keydown', function(e){
         if(e.keyCode == "13"){
             if(validateString(tCommandLine.value)){
                 if(tCommandLine.value.trim().toLowerCase() == 'restart'){
-                    setRandomCountries();
                     setGameStartValues();
+                }
+                else if(tCommandLine.value.trim().toLowerCase() == 'komendy'){
+                    tDescriptionValue = 'W każdym momencie gry możesz użyć następujących komend:<br><span class="span_bold">pomoc</span> - wyświetla możliwe ruchy<br><span class="span_bold">restart</span> - restartuje gre losując nowe miejsca<br><span class="span_bold">komendy</span> - pokazuje możliwe komendy';
+                    setGameValues(tMove, tCurrentPositionValue, tDescriptionValue, tMapSrc);
                 }
                 else makeMove(tCommandLine.value.trim());
             }

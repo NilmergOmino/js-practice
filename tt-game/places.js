@@ -46,3 +46,7 @@ var countries = //europa:
                 ["Wielka Brytania", "gb", "Irlandia"],
                 ["Włochy", "it", "Szwajcaria", "Watykan", "Słowenia", "San Marino", "Francja", "Austria"]
             ];
+
+var seas = [["Morze Bałtyckie", "Szwecja", "Finlandia", "Rosja", "Estonia", "Łotwa", "Litwa", "Polska", "Niemcy", "Dania", "Morze Północne", "Ocean Atlantycki"],
+            ["Morze Czarne", "Bułgaria", "Gruzja", "Rosja", "Rumunia", "Turcja", "Ukraina", " Morze Azowskie", "Morze Marmara", "Ocean Atlantycki"]
+            ];

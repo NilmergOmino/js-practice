@@ -62,3 +62,6 @@ body{
 .main__map-figurecaption{
     font-size: 11px;
 }
+.span_bold{
+    font-weight: bold;
+}
