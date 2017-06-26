@@ -6,7 +6,8 @@ window.addEventListener('DOMContentLoaded', function(){
         tCommandLine = document.getElementById('command-line'),
         tMap = document.getElementById('country-map'),
         countriesLength = countries.length,
-        seasLength = seas.length;
+        allPlaces = countries.concat(seas),
+        allPlacesLength = allPlaces.length;
     var randomStartCountry, randomEndCountry, tStartPosition, tDestinationValue, tDescriptionValue, tMove, tCurrentPositionValue, tAllVisitedPlaces, tMapSrc;
     tCommandLine.focus();
 
@@ -45,36 +46,26 @@ window.addEventListener('DOMContentLoaded', function(){
         if(placeToGo.toLowerCase() == "pomoc"){
             needHelp = true;
             var whereCanYouGo = '';
-        }
-        for (var i = 0; i < countriesLength; i++) {
-            if(countries[i][0] == tCurrentPositionValue){
-                var countryLength = countries[i].length;
-                for(var j=2; j<countryLength; j++){
-                    if(needHelp){
-                        whereCanYouGo += countries[i][j]+", ";
-                    }
-                    if(countries[i][j].toLowerCase() == placeToGo.toLowerCase()){
-                        isOk = true;
-                        placeToGo = countries[i][j];
-                        tAllVisitedPlaces += placeToGo+" -> ";
-                        for(var k=0; k<countriesLength; k++){
-                            if(countries[k][0] == placeToGo){
-                                tMapSrc = "img/countries/"+countries[k][1]+".svg";
-                            }
-                        }
+            for(var i=0; i<allPlacesLength; i++){
+                if(allPlaces[i][0] == tCurrentPositionValue){
+                    var thisPlaceLength = allPlaces[i].length;
+                    for(var j=2; j<thisPlaceLength; j++){
+                        whereCanYouGo += allPlaces[i][j]+", ";
                     }
                 }
             }
         }
-        for (var i = 0; i < seasLength; i++) {
-            if(seas[i][0].toLowerCase() == placeToGo.toLowerCase()){
-                var seaLength = seas[i].length;
-                for(var j=1; j<seaLength; j++){
-                    if(seas[i][j] == tCurrentPositionValue){
-                        isOk = true;
-                        placeToGo = seas[i][0];
-                        tAllVisitedPlaces += placeToGo+" -> ";
-                        tMapSrc = "img/countries/seaPlace.svg";
+        else{
+            for (var i = 0; i < allPlacesLength; i++) {
+                if(allPlaces[i][0].toLowerCase() == placeToGo.toLowerCase()){
+                    var thisPlaceLength = allPlaces[i].length;
+                    for(var j=2; j<thisPlaceLength; j++){
+                        if(allPlaces[i][j] == tCurrentPositionValue){
+                            isOk = true;
+                            placeToGo = allPlaces[i][0];
+                            tAllVisitedPlaces += placeToGo+" -> ";
+                            tMapSrc = "img/countries/"+allPlaces[i][1]+".svg";
+                        }
                     }
                 }
             }
