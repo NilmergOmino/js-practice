@@ -51,16 +51,22 @@ body{
 .main__travel-status-values{
     font-weight: bold;
 }
-.main__country-map-figure{
-    display: block;
-    text-align: center;
-    padding-top: 25px;
+.world-map{
+    margin: 20px auto;
+    height: 250px;
+    width: 400px;
+    border: 1px solid rgba(0,0,0,0.2);
+    /* http://simplemaps.com/resources/svg-world */
+    background: url('img/world.svg');
+    background-size: 2000px 1000px;
+    background-color: rgb(66, 134, 244);
 }
-.main__country-map{
-    height: 200px;
-}
-.main__map-figurecaption{
-    font-size: 11px;
+.point-on-map{
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    background-color: red;
+    margin: 123px auto;
 }
 .span_bold{
     font-weight: bold;
